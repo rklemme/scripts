@@ -1,0 +1,17 @@
+#!/bin/dash
+
+# Dump memory usage
+# Columns:
+# 0. aggregated memory percentage
+# 1. PID
+# 2. % memory actually used (rsz)
+# 3. resident (= used) size
+# 4. virtual size
+# 5. size (when swapped out)
+# 6. major page faults (i.e. memory needed loading from disk)
+# 7. user name
+# 8. command with arguments
+
+ps -e -o 'pid,%mem,rsz,vsz,sz,maj_flt,user,args' --sort '-rsz' \
+| awk 'NR==1 {printf "%-5s  ", "agmem"} NR>1 {sum+=$2; printf "%5.1f%% ", sum} {print}'
+
